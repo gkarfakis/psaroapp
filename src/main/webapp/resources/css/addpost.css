@@ -1,0 +1,80 @@
+.fakeimg {
+    height: 350px;
+}
+
+#prologos{
+    background-image: url("images/japan-galleries_blum-and-poe_1100x733.jpg"); /* The image used */
+    background-color: #cccccc; /* Used if the image is unavailable */
+    height: 200px; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+.keimeno{
+    color: orange;
+}
+
+input[type=submit] {
+    background-color: orange;
+    border: none;
+    color: white;
+    padding: 4px 16px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+textarea {
+    color: black;
+     text-decoration: none;
+     cursor: pointer;
+     border-radius: 6px;
+}
+input[type=text] {
+     color: black;
+     margin: 4px 2px;
+    cursor: pointer;
+}
+li{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 auto;
+    
+}
+#even:nth-child(odd){
+    background:#fafbc5;
+}
+
+ul{
+    text-align: center;
+}
+
+.formapost{   
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+
+}
+
+textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    width: 100%;
+}
+
+body, html {
+  height: 100%;
+
+  /* The image used */
+  background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("images/artgallery2.jpg");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

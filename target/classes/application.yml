@@ -1,0 +1,22 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  jpa:
+    database: ORACLE
+    show-sql: false
+    generate-ddl: true
+    ddl-auto: update
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: FISHING
+    password: enasoraioskodikos
+    driver-class-name: oracle.jdbc.OracleDriver
+
+server:
+  error:
+    whitelabel:
+      enabled=false:
+  port: 1684

@@ -1,0 +1,8 @@
+org\fishing\tournament\model\SectorMember.class
+org\fishing\tournament\model\SectorMemberId.class
+org\fishing\tournament\model\Sector.class
+org\fishing\tournament\model\Club.class
+org\fishing\tournament\model\Contest.class
+org\fishing\tournament\model\ClubMember.class
+org\fishing\tournament\FishingApplication.class
+org\fishing\tournament\controllers\ContestController.class
