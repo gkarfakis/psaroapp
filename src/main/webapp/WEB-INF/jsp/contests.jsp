@@ -2,28 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Contests</title>
-</head>
-<style>
-    #contests {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    #contests td, #contests th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    #contests tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-</style>
-</html>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +20,6 @@
         #contests {
             font-family: Arial, Helvetica, sans-serif;
             border-collapse: collapse;
-            width: 100%;
         }
 
         #contests td, #contests th {
@@ -50,9 +27,13 @@
             padding: 8px;
         }
 
-        #contests tr:nth-child(even){background-color: #f2f2f2;}
+        #contests tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-        #contests tr:hover {background-color: #ddd;}
+        #contests tr:hover {
+            background-color: #ddd;
+        }
 
         #contests th {
             padding-top: 12px;
@@ -64,44 +45,63 @@
     </style>
 </head>
 <body>
-<a class="navbar-brand" href="http://localhost:1684/home" style="color:orange; font-family: 'Barriecito', cursive;"><h3>Psaroapp</h3>
+<a class="navbar-brand" href="http://localhost:1684/home" style="color:orange; font-family: 'Barriecito', cursive;"><h3>
+    Psaroapp</h3>
 </a>
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-8"><h2>Contests</h2></div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" style="border-style: groove">
                     <form action="http://localhost:1684/contest" method="post">
-                        <label>Contest date:</label><br>
-                        <input type="text" name="date"  placeholder="dd/MM/yyyy" required><br>
+                        <label>Date:</label>
+                        <input type="text" name="date" placeholder="dd/MM/yyyy" required><br>
+                        <label>Description:</label>
+                        <input type="text" name="description"><br>
                         <input type="submit" value="Add contest">
                     </form>
                 </div>
             </div>
         </div>
+        <h2 style="color: red">${message}</h2>
 
-        <table class="table table-bordered" id="contests">
-            <tr>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-            <c:forEach items="${contests}" var="contest">
+        <div style="height:80%; overflow:auto">
+
+            <table class="table table-bordered" id="contests">
                 <tr>
-                    <td><a href='contest/${contest.id}'>${contest.contestDate}</a></td>
-                    <td>
-                        <form action="http://localhost:1684/deleteContest" method="post">
-                            <button type="submit">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <input type="hidden" name="contestId" value=${contest.id}>
-                        </form>
-                    </td>
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
-            </c:forEach>
+                <c:forEach items="${contests}" var="contest">
+                    <tr>
+                        <td>${contest.id}</td>
+                        <td><a href='contest/${contest.id}'>${contest.contestDate}</a></td>
+                        <td>${contest.description}</td>
+                        <td>
+                            <form action="http://localhost:1684/editContest" method="get">
+                                <button type="submit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <input type="hidden" name="contestId" value=${contest.id}>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="http://localhost:1684/deleteContest" method="post">
+                                <button type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <input type="hidden" name="contestId" value=${contest.id}>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
 
-        </table>
-
+        </div>
     </div>
 </div>
 </body>

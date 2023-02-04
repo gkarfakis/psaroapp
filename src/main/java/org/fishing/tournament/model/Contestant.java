@@ -16,7 +16,7 @@ public class Contestant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Club club;
-
+    // TODO: 2/4/2023 unique constraint for fisherman contest 
     @ManyToOne(fetch = FetchType.LAZY)
     private Fisherman fisherman;
 

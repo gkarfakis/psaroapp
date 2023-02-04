@@ -24,8 +24,13 @@ public class Fisherman  implements Comparable<Fisherman> {
     @JsonIgnore
     private Long id;
 
+    // TODO: 2/2/2023 not null constraints 
     private String fishermanName;
     private String fishermanSurName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Club club;
+
 
     // TODO: 1/29/2023 unique constraint fisherman name 
     public Fisherman(String fishermanName, String fishermanSurName) {

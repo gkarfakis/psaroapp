@@ -2,28 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Fishing Clubs</title>
-</head>
-<style>
-    #clubs {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    #clubs td, #clubs th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    #clubs tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-</style>
-</html>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fishing Clubs</title>
+    <title>Clubs</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -42,7 +20,6 @@
         #clubs {
             font-family: Arial, Helvetica, sans-serif;
             border-collapse: collapse;
-            width: 100%;
         }
 
         #clubs td, #clubs th {
@@ -76,39 +53,51 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-8"><h2>Clubs</h2></div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" style="border-style: groove">
                     <form action="http://localhost:1684/club" method="post">
-                        <label>Club name:</label><br>
+                        <label>Name:</label>
                         <input type="text" name="clubName" required><br>
-                        <input type="submit" value="Add new Club">
+                        <input type="submit" value="Add club">
                     </form>
                 </div>
             </div>
         </div>
 
-        <table class="table table-bordered" id="clubs">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-            <c:forEach items="${clubs}" var="club">
-                <tr>
-                    <td>${club.id}</td>
-                    <td>${club.clubName}</td>
-                    <td>
-                        <form action="http://localhost:1684/deleteClub" method="post">
-                            <button type="submit">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <input type="hidden" name="clubId" value=${club.id}>
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
-            <h2 style="color: red">${message}</h2>
-        </table>
+        <div style="height:80%; overflow:auto">
 
+            <table class="table table-bordered" id="clubs">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                <c:forEach items="${clubs}" var="club">
+                    <tr>
+                        <td>${club.id}</td>
+                        <td>${club.clubName}</td>
+                        <td>
+                            <form action="http://localhost:1684/editClub" method="get">
+                                <button type="submit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <input type="hidden" name="clubId" value=${club.id}>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="http://localhost:1684/deleteClub" method="post">
+                                <button type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <input type="hidden" name="clubId" value=${club.id}>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <h2 style="color: red">${message}</h2>
+            </table>
+
+        </div>
     </div>
 </div>
 </body>

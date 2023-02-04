@@ -24,6 +24,8 @@ public class Contest {
 
     private LocalDate contestDate;
 
+    private String description;
+
     @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contestant> contestants = new ArrayList<>();
 

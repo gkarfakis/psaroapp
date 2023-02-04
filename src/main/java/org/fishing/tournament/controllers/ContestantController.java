@@ -7,30 +7,57 @@ import org.fishing.tournament.model.Fisherman;
 import org.fishing.tournament.repositories.ClubRepo;
 import org.fishing.tournament.repositories.ContestRepo;
 import org.fishing.tournament.repositories.ContestantRepo;
-import org.fishing.tournament.repositories.FishermanRepo;
+import org.fishing.tournament.services.ClubService;
 import org.fishing.tournament.services.ContestantService;
+import org.fishing.tournament.services.FishermanService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class ContestantController {
 
     private final ContestRepo contestRepo;
     private final ClubRepo clubRepo;
-    private final FishermanRepo fishermanRepo;
+    private final FishermanService fishermanService;
     private final ContestantRepo contestantRepo;
     private final ContestantService contestantService;
+    private final ClubService clubService;
 
-    public ContestantController(ContestRepo contestRepo, ClubRepo clubRepo, FishermanRepo fishermanRepo, ContestantRepo contestantRepo, ContestantService contestantService) {
+    public ContestantController(ContestRepo contestRepo, ClubRepo clubRepo, FishermanService fishermanService, ContestantRepo contestantRepo, ContestantService contestantService, ClubService clubService) {
         this.contestRepo = contestRepo;
         this.clubRepo = clubRepo;
-        this.fishermanRepo = fishermanRepo;
+        this.fishermanService = fishermanService;
         this.contestantRepo = contestantRepo;
         this.contestantService = contestantService;
+        this.clubService = clubService;
+    }
+
+    @GetMapping("/contest/{id}")
+    public String getContest(@PathVariable Long id, ModelMap mm) {
+        Optional<Contest> opt = contestRepo.findById(id);
+        opt.ifPresent(contest -> {
+            mm.addAttribute("contest", contest);
+            mm.addAttribute("contestants", contestantService.getAllContestantsForContest(contest)
+                    .stream().sorted(Comparator.comparing(Contestant::getClub).reversed())
+                    .collect(Collectors.toList()));
+            List<Contestant> contestants = contestantService.getAllContestantsForContest(contest);
+            mm.addAttribute("totalNum", contestants.size());
+        });
+
+        mm.addAttribute("clubs", clubService.getAllClubsAlphabetic());
+        mm.addAttribute("fishermen", fishermanService.getFishermenAlphabetically().stream()
+                .filter(x -> x.getClub() == null)
+                .collect(Collectors.toList()));
+        return "contestants";
     }
 
     @PostMapping("/contestant")
@@ -39,25 +66,15 @@ public class ContestantController {
         Contest contest = contestRepo.findById(contestId).get();
         Long clubId = Long.valueOf(request.getParameter("clubId"));
         Club club = clubRepo.findById(clubId).get();
-        Long fishermanId = Long.valueOf(request.getParameter("fishermanId"));
-        Fisherman fisherman = fishermanRepo.findById(fishermanId).get();
+        List<Fisherman> clubMembers = club.getFishermen();
 
-        Contestant contestant = new Contestant();
-        contestant.setClub(club);
-        contestant.setFisherman(fisherman);
-        contestant.setContest(contest);
-        contestant = contestantRepo.save(contestant);
-
-        List<Contestant> contestants = contestantService.getAllContestantsForContest(contest);
-        List<Club> clubs = clubRepo.findAll();
-        List<Fisherman> fishermen = fishermanRepo.findAll();
-
-//        mm.addAttribute("contest", contest);
-        mm.addAttribute("contest", contest);
-        mm.addAttribute("contestants", contestants);
-        mm.addAttribute("clubs", clubs);
-        mm.addAttribute("fishermen", fishermen);
-        mm.addAttribute("totalNum", contestants.size());
-        return "contestants";
+        clubMembers.forEach(f -> {
+            Contestant contestant = new Contestant();
+            contestant.setClub(club);
+            contestant.setFisherman(f);
+            contestant.setContest(contest);
+            contestantRepo.save(contestant);
+        });
+        return getContest(contestId, mm);
     }
 }

@@ -2,28 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Fishing fishermen</title>
-</head>
-<style>
-    #fishermen {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    #fishermen td, #fishermen th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    #fishermen tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-</style>
-</html>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +9,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fishing Fishermen</title>
+    <title>Fishermen</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -42,7 +20,6 @@
         #fishermen {
             font-family: Arial, Helvetica, sans-serif;
             border-collapse: collapse;
-            width: 100%;
         }
 
         #fishermen td, #fishermen th {
@@ -50,9 +27,13 @@
             padding: 8px;
         }
 
-        #fishermen tr:nth-child(even){background-color: #f2f2f2;}
+        #fishermen tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-        #fishermen tr:hover {background-color: #ddd;}
+        #fishermen tr:hover {
+            background-color: #ddd;
+        }
 
         #fishermen th {
             padding-top: 12px;
@@ -64,50 +45,73 @@
     </style>
 </head>
 <body>
-<a class="navbar-brand" href="http://localhost:1684/home" style="color:orange; font-family: 'Barriecito', cursive;"><h3>Psaroapp</h3>
+<a class="navbar-brand" href="http://localhost:1684/home" style="color:orange; font-family: 'Barriecito', cursive;"><h3>
+    Psaroapp</h3>
 </a>
 <div class="container">
     <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-8"><h2>Fishermen</h2></div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" style="border-style: groove">
                     <form action="http://localhost:1684/fisherman" method="post">
-                        <label>Name:</label><br>
+                        <label>Club:</label>
+                        <select name="clubId">
+                            <c:forEach items="${clubs}" var="club">
+                                <option value="${club.id}">
+                                        ${club.clubName}
+                                </option>
+                            </c:forEach>
+                        </select><br>
+                        <label>Name:</label>
                         <input type="text" name="name" required><br>
-                        <label>Surname:</label><br>
+                        <label>Surname:</label>
                         <input type="text" name="surname" required><br>
-                        <input type="submit" value="Add new Fisherman">
+                        <input type="submit" value="Add Fisherman">
                     </form>
                 </div>
             </div>
         </div>
 
-        <table class="table table-bordered" id="fishermen">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Action</th>
-            </tr>
-            <c:forEach items="${fishermen}" var="fisherman">
+        <div style="height:80%; overflow:auto">
+
+            <table class="table table-bordered" id="fishermen">
                 <tr>
-                    <td>${fisherman.id}</td>
-                    <td>${fisherman.fishermanName}</td>
-                    <td>${fisherman.fishermanSurName}</td>
-                    <td>
-                        <form action="http://localhost:1684/deleteFisherman" method="post">
-                            <button type="submit">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            <input type="hidden" name="fishermanId" value=${fisherman.id}>
-                        </form>
-                    </td>
+                    <th>Id</th>
+                    <th>Club</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
-            </c:forEach>
+                <c:forEach items="${fishermen}" var="fisherman">
+                    <tr>
+                        <td>${fisherman.id}</td>
+                        <td>${fisherman.club.clubName}</td>
+                        <td>${fisherman.fishermanName}</td>
+                        <td>${fisherman.fishermanSurName}</td>
+                        <td>
+                            <form action="http://localhost:1684/editFisherman" method="get">
+                                <button type="submit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <input type="hidden" name="fishermanId" value=${fisherman.id}>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="http://localhost:1684/deleteFisherman" method="post">
+                                <button type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <input type="hidden" name="fishermanId" value=${fisherman.id}>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <h2 style="color: red">${message}</h2>
+            </table>
 
-        </table>
-
+        </div>
     </div>
 </div>
 </body>

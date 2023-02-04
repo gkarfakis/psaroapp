@@ -14,8 +14,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "contestants")
-public class Club {
+@ToString(exclude = {"contestants", "fishermen"})
+public class Club implements Comparable<Club> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
@@ -31,4 +31,14 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Contestant> contestants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Fisherman> fishermen = new ArrayList<>();
+
+
+    @Override
+    public int compareTo(Club c1) {
+        return c1.getClubName().compareTo(this.clubName);
+    }
 }
